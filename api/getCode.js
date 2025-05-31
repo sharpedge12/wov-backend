@@ -1,7 +1,7 @@
 import { checkAuth } from './_helpers';
 
 export default async function handler(req, res) {
-  // Set CORS headers for all requests
+  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -18,13 +18,10 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Return only variable declarations
-  const injectVarsString = `
-    let var1 = 'lib/defpayload.js';
-    let var2 = 'lib/payload.js';
-    let var3 = 'lib/notpayload.js';
-  `;
-
-  res.setHeader('Content-Type', 'text/plain');
-  res.status(200).send(injectVarsString.trim());
+  // Return JSON with variable values only
+  res.status(200).json({
+    var1: 'lib/defpayload.js',
+    var2: 'lib/payload.js',
+    var3: 'lib/notpayload.js',
+  });
 }
