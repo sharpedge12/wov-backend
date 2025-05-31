@@ -1,28 +1,8 @@
 import { checkAuth } from './_helpers';
 
-const injectScriptCodeString = `
-function injectScript(src, onload) {
-  const script = document.createElement('script');
-  script.src = chrome.runtime.getURL(src);
-  script.type = 'text/javascript';
-  script.onload = function () {
-    this.remove();
-    if (onload) onload();
-  };
-  document.documentElement.appendChild(script);
-}
-
-// Inject jQuery first, then socket.io, then main.js
-injectScript('lib/jquery-3.7.1.min.js', () => {
-  injectScript('lib/payload.js', () => {
-    injectScript('lib/notpayload.js');
-  });
-});
-`;
-
 export default async function handler(req, res) {
   // Set CORS headers for all requests
-  res.setHeader('Access-Control-Allow-Origin', '*'); // or restrict to specific origins
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -38,6 +18,13 @@ export default async function handler(req, res) {
     return;
   }
 
+  // Return only variable declarations
+  const injectVarsString = `
+    let var1 = 'lib/defpayload.js';
+    let var2 = 'lib/payload.js';
+    let var3 = 'lib/notpayload.js';
+  `;
+
   res.setHeader('Content-Type', 'text/plain');
-  res.status(200).send(injectScriptCodeString);
+  res.status(200).send(injectVarsString.trim());
 }
