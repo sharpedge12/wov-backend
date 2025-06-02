@@ -12,11 +12,11 @@ export default async function handler(req, res) {
   }
 
   const { id, password } = req.query;
-  // const auth = await checkAuth(id, password);
-  // if (!auth.valid) {
-  //   res.status(401).json({ message: auth.message });
-  //   return;
-  // }
+  const auth = await checkAuth(id, password);
+  if (!auth.valid) {
+    res.status(401).json({ message: auth.message });
+    return;
+  }
 
   // Return JSON with variable values only
   res.status(200).json({
