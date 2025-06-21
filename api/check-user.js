@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { id, password } = req.query;
+  const { id} = req.query;
   const auth = await checkPlayerAccess(id);
   if (!auth.valid) {
     res.status(401).json({ message: auth.message });
