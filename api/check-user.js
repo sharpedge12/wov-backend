@@ -1,4 +1,4 @@
-import { checkAuth } from './_helpers';
+import { checkPlayerAccess } from './_helpers';
 
 export default async function handler(req, res) {
   // CORS headers
