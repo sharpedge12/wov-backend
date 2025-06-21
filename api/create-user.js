@@ -33,7 +33,7 @@ export default async function handler(req, res) {
         $set: {
           password,
           alloted_date: now,
-          alloted_time: time_duration,
+          alloted_time: time_duration * 86400000,
         },
       },
       { upsert: true, new: true }

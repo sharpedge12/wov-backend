@@ -28,4 +28,24 @@ async function checkAuth(id, password) {
   return { valid: true, user };
 }
 
-export { User, checkAuth };
+async function checkPlayerAccess(id) {
+  if (!id) {
+    return { valid: false, message: 'Missing id' };
+  }
+
+  const user = await User.findById(id);
+  if (!user) {
+    return { valid: false, message: 'User not found' };
+  }
+
+  const now = Date.now();
+  const accessExpiry = user.alloted_date + user.alloted_time;
+
+  if (now > accessExpiry) {
+    return { valid: false, message: 'Access expired' };
+  }
+
+  return { valid: true, user };
+}
+
+export { User, checkAuth, checkPlayerAccess };
